@@ -59,17 +59,13 @@ function App() {
 		const showDone = () => {
 			const doneArray = items.filter((item) => { return item.done !== false});
 			setFilteredItems([...doneArray]);
-			if(doneArray.length <= 5) {
 				setPage(1);
-			}
 		}
 		
 		const showUndone = () => {
 			const undoneArray = items.filter((item) => { return item.done === false});
 			setFilteredItems([...undoneArray]);
-			if(undoneArray.length <= 5) {
 				setPage(1);
-			}
 		}
 
 		const sortUp = () => {
