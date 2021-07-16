@@ -1,0 +1,218 @@
+*,
+*::before,
+*::after {
+  outline: 0;
+	padding: 0;
+	margin: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  position: relative;
+  width: 900px;
+  height: 1vh;
+  margin: 0 auto;
+  font-family: 'Indie Flower', cursive;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  margin-top: 150px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 45px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form__input {
+  width: 300px;
+  height: 30px;
+  margin-top: 7px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 18px;
+  border: 2px ridge #808080;
+}
+
+.filter {
+  display: flex;
+  list-style: none;
+}
+
+.form-buttons {
+  margin-top: 10px;
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter__button {
+  height: 30px;
+  padding: 0 3px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 18px;
+  background-color: #fff;
+  border: 2px ridge #808080;
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+}
+
+.sort__text {
+  margin-right: 10px;
+}
+
+.sort__button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: #fff;
+}
+
+.fas {
+  pointer-events: none;
+}
+
+.todo-ul {
+  width: 320px;
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-li {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  border: 2px ridge #000000;
+}
+
+.edit-inp {
+  position: absolute;
+  top: 50%;
+  left: 25px;
+  z-index: 2;
+  /* display: none; */
+  transform: translateY(-50%);
+  width: 185px;
+  height: 32px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 18px;
+}
+
+.li__inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-checkbox {
+  margin-right: 10px;
+}
+
+.todo-checkbox {
+  position: absolute;
+	appearance: none;
+}
+
+.checkbox-label {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+
+.checkbox-label:before {
+  display: block;
+  width: 30px;
+  height: 30px;
+  content: "";
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.checkbox-label:after {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	z-index: 2;
+	display: block;
+	width: 25px;
+	height: 25px;
+	content: "";
+	background: url("check-solid.svg");
+	background-repeat: no-repeat;
+	background-size: 18px;
+	background-position: center;
+	opacity: 0;
+}
+
+.todo-checkbox:checked + .checkbox-label:after {
+	opacity: 1;
+}
+
+.li__func {
+  display: flex;
+  align-items: center;
+}
+
+.todo-date {
+  padding-top: 4px;
+  margin-right: 5px;
+}
+
+.delete {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #fff;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer__ul {
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 290px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.page {
+  width: 45px;
+  height: 35px;
+  font-size: 25px;
+  text-align: center;
+  border: 2px ridge #808080;
+}
+
+.page-a {
+  color: #000000;
+  text-decoration: none;
+}
