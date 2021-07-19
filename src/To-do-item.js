@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ListItem, Checkbox, Button, TextField, Typography } from '@material-ui/core/';
 import useStyles from './To-do-item.style.js';
 
-function ToDoItem({ item, checkItem, removeItem, editItem }) {    
+function ToDoItem({ item, checkItem, removeItem, editItem, deleteData }) {    
 	const [todoText, setTodoText] = useState(item.task);
 	const [isEditing, setIsEditing] = useState(false);
 	const classes = useStyles();
@@ -61,7 +61,7 @@ function ToDoItem({ item, checkItem, removeItem, editItem }) {
 						{item.time}
 					</Typography>
 				</div>
-				<Button variant="outlined" className={classes.delete} onClick={() => removeItem(item.id)}>
+				<Button variant="outlined" className={classes.delete} onClick={() => deleteData(item.id)}>
 					<i className="far fa-trash-alt fa-lg"></i>
 				</Button>
 		  </div>

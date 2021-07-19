@@ -20,20 +20,32 @@ function App() {
 	const firstItemIndex = lastItemIndex - itemsPerPage;
 	const currentPage = filteredItems.slice(firstItemIndex, lastItemIndex);
 
-	// https://todo-api-learning.herokuapp.com/v1/tasks/2
 	useEffect(() => {	
 		getData();
 	}, []);
 
 	const getData = () => {
-		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2').then((res) => {
-			res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
-			console.log(res.data);
-
+		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2')
+			.then(setItems([]))
+			.then((res) => { if (res.data.length === 0) {
+				setFilteredItems([]);
+			} else {
+				res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
+			}
 		});
 	}
 
-	
+	const postData = (task) => {
+		if (task) {
+			axios.post('https://todo-api-learning.herokuapp.com/v1/task/2', {name:task, done:false})
+			.then(() => getData());
+		}
+	}
+
+	const deleteData = (id) => {
+		axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/2/${id}`)
+		.then(() => getData());
+	}
 
 		const addItem = (task, id, status, time) => {
 			if (task) {
@@ -115,7 +127,10 @@ function App() {
 		<main className={classes.main}>
 			<header className={classes.header}>
 				<Typography className={classes.heading} variant="h1">ToDo</Typography>
-				<ToDoForm addItem={addItem}/>
+				<ToDoForm 
+				addItem={addItem}
+				postData={postData}
+				/>
 				<div className={classes.formButtons}>
 					<FilterItems
 						filteredItems={[...filteredItems]}
@@ -140,6 +155,7 @@ function App() {
 						 key={item.id}
 						 checkItem={checkItem}
 						 removeItem={removeItem}
+						 deleteData={deleteData}
 					 />
 					))
 				}
