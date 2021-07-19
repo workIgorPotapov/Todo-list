@@ -33,6 +33,8 @@ function App() {
 		});
 	}
 
+	
+
 		const addItem = (task, id, status, time) => {
 			if (task) {
 				const newItem = {
@@ -85,10 +87,10 @@ function App() {
 
 		const sortUp = () => {
 			const sortUpArray = items.sort((a, b) => {
-				if (a.time < b.time) {
+				if (a.time > b.time) {
 					return -1;
 				}
-				if (a.time > b.time){
+				if (a.time < b.time){
 					return 1;
 				}
 				return 0;
@@ -98,10 +100,10 @@ function App() {
 
 		const sortDown = () => {
 			const sortDownArray = items.sort((a, b) => {
-				if (a.time > b.time) {
+				if (a.time < b.time) {
 					return -1;
 				}
-				if (a.time < b.time){
+				if (a.time > b.time){
 					return 1;
 				}
 				return 0;
