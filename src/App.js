@@ -21,13 +21,13 @@ function App() {
 	const currentPage = filteredItems.slice(firstItemIndex, lastItemIndex);
 
 	// https://todo-api-learning.herokuapp.com/v1/tasks/2
-	useEffect(() => {
+	useEffect(() => {	
 		getData();
 	}, []);
 
 	const getData = () => {
 		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2').then((res) => {
-			const arr = res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
+			res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
 			console.log(res.data);
 
 		});
