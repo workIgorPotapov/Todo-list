@@ -18,32 +18,38 @@ function App() {
 
 	const lastItemIndex = page * itemsPerPage;
 	const firstItemIndex = lastItemIndex - itemsPerPage;
-	const currentPage = filteredItems.slice(firstItemIndex, lastItemIndex);
+	const currentPage = items.slice(firstItemIndex, lastItemIndex);
 
-	useEffect(() => {	
-		getData();
-	}, []);
-
-	const getData = () => {
-		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2')
-			.then(setItems([]))
-			.then((res) => { if (res.data.length === 0) {
-				setFilteredItems([]);
-			} else {
-				res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
-			}
-		});
+	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2';
+	const postLink = 'https://todo-api-learning.herokuapp.com/v1/task/2';
+	const patchLink = (id) => {
+		return `https://todo-api-learning.herokuapp.com/v1/task/2/${id}`
 	}
+
+	useEffect(() => {
+		getData()
+	}, [])
+
+	const getData = async () => {
+		const res = await axios.get(getLink);
+		console.log(res.data);
+					setItems([...res.data]);
+		}
 
 	const postData = (task) => {
 		if (task) {
-			axios.post('https://todo-api-learning.herokuapp.com/v1/task/2', {name:task, done:false})
+			axios.post(postLink, {name: task, done: false})
 			.then(() => getData());
 		}
 	}
 
 	const deleteData = (id) => {
-		axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/2/${id}`)
+		axios.delete(patchLink(id))
+		.then(() => getData());
+	}
+
+	const checkData = (item, id) => {
+		axios.patch(patchLink(id), {done: !item.done})
 		.then(() => getData());
 	}
 
@@ -56,7 +62,9 @@ function App() {
 					done: status,
 					time: time,
 				}
-				items.push(newItem);
+				const newArr = [...items];
+				newArr.push(newItem);
+				setItems([...newArr]);
 				setFilteredItems([...items]);
 			}
 		}
@@ -70,9 +78,9 @@ function App() {
 		}
 		
 		const removeItem = (id) => {
-			const removedAdday = items.filter((item) => item.id !== id);
-			setItems([...removedAdday]);
-			setFilteredItems([...removedAdday]);
+			const removedArray = items.filter((item) => item.id !== id);
+			setItems([...removedArray]);
+			setFilteredItems([...removedArray]);
 		}
 
 		const checkItem = (id) => {
@@ -107,7 +115,10 @@ function App() {
 				}
 				return 0;
 				});
+				
 			setFilteredItems([...sortUpArray]);
+			console.log(filteredItems);
+			console.log(items);
 		}
 
 		const sortDown = () => {
@@ -120,7 +131,10 @@ function App() {
 				}
 				return 0;
 				});
+
 			setFilteredItems([...sortDownArray]);
+			console.log(filteredItems);
+			console.log(items);
 		}
 
 	return (
@@ -152,20 +166,21 @@ function App() {
 					(<ToDoItem 
 						 editItem={editItem}
 						 item={item}
-						 key={item.id}
+						 key={item.uuid}
 						 checkItem={checkItem}
 						 removeItem={removeItem}
 						 deleteData={deleteData}
+						 checkData={checkData}
 					 />
 					))
 				}
 			</List>
-			{ filteredItems.length > 5 &&
+			{ items.length > 5 &&
 							<Pages 
 							setPage={setPage}
 							page={page}
 							itemsPerPage={itemsPerPage}
-							totalItems={filteredItems.length}
+							totalItems={items.length}
 							/>
 			}
 		</main>

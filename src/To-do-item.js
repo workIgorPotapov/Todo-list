@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { ListItem, Checkbox, Button, TextField, Typography } from '@material-ui/core/';
 import useStyles from './To-do-item.style.js';
 
-function ToDoItem({ item, checkItem, removeItem, editItem, deleteData }) {    
-	const [todoText, setTodoText] = useState(item.task);
+function ToDoItem({ item, checkItem, editItem, deleteData, checkData }) {    
+	const [todoText, setTodoText] = useState(item.name);
 	const [isEditing, setIsEditing] = useState(false);
 	const classes = useStyles();
 
 	const editting = (e, id) => {
 		setTodoText(e.target.value);
 		if (e.key === 'Enter') {        
-			editItem(todoText, id);
+			editItem(todoText, uuid);
 			hideInput();
 		}
 		if (e.key === 'Escape') {
@@ -19,7 +19,7 @@ function ToDoItem({ item, checkItem, removeItem, editItem, deleteData }) {
 	}
 
 	const calcelEditting = () => {
-		setTodoText(item.task);
+		setTodoText(item.name);
 		hideInput();
 	}
 
@@ -29,13 +29,13 @@ function ToDoItem({ item, checkItem, removeItem, editItem, deleteData }) {
 
 	return (
 		<ListItem className={classes.todoLi}
-			key={item.id}
+			key={item.uuid}
 			onDoubleClick={(e) => setIsEditing(true)}>
 					<div className={classes.liInner}>
 						<Checkbox 
-							onClick={() => checkItem(item.id)}
+							onClick={() => checkData(item, item.uuid)}
 							type="checkbox" 
-							id={'inp_' + item.id}
+							id={'inp_' + item.uuid}
 							defaultChecked={item.done}
 							color="primary"
 						/>
@@ -44,24 +44,23 @@ function ToDoItem({ item, checkItem, removeItem, editItem, deleteData }) {
 								autoFocus
 								onBlur={() => calcelEditting()}
 								value={todoText}
-								onChange={(e) => editting(e, item.id)}
-								onKeyDown={(e) => editting(e, item.id)}
+								onChange={(e) => editting(e, item.uuid)}
+								onKeyDown={(e) => editting(e, item.uuid)}
 								className={classes.editInp}
 								type="text"
-								id={'edit_' + item.id}
+								id={'edit_' + item.uuid}
 							/>
 						:
-							<Typography className={classes.typography}>{item.task}</Typography>
+							<Typography className={classes.typography}>{item.name}</Typography>
 						}
 					</div>
 		  <div className={classes.liFunc}>
 				<div className={classes.todoDate}>
 					<Typography className={classes.typography}>
-						{/* {item.time.getDate()}/{item.time.getMonth() + 1}/{item.time.getFullYear()} */}
-						{item.time}
+						{/* {item.time.substr(0, 10)} */}
 					</Typography>
 				</div>
-				<Button variant="outlined" className={classes.delete} onClick={() => deleteData(item.id)}>
+				<Button variant="outlined" className={classes.delete} onClick={() => deleteData(item.uuid)}>
 					<i className="far fa-trash-alt fa-lg"></i>
 				</Button>
 		  </div>
