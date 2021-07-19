@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import axios from 'axios';
+import {useState, useEffect} from 'react';
 import ToDoForm from './To-do-form';
 import FilterItems from "./Filter-items";
 import SortItems from "./Sort-items";
@@ -19,13 +20,28 @@ function App() {
 	const firstItemIndex = lastItemIndex - itemsPerPage;
 	const currentPage = filteredItems.slice(firstItemIndex, lastItemIndex);
 
-		const addItem = (inputValue) => {
-			if (inputValue) {
+	// https://todo-api-learning.herokuapp.com/v1/tasks/2
+	useEffect(() => {
+		getData();
+	}, []);
+
+	const getData = () => {
+		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2').then((res) => {
+			const arr = res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
+			console.log(res.data);
+			let qwe = new Date().toString();
+			console.log(qwe);
+	});
+	}
+
+		const addItem = (task, id, status, time) => {
+			if (task) {
 				const newItem = {
-					id: Math.random().toString().substr(2,5),
-					task: inputValue,
-					done: false,
-					time: new Date(),
+					// id: Math.random().toString().substr(2,5),
+					id: id,
+					task: task,
+					done: status,
+					time: time,
 				}
 				items.push(newItem);
 				setFilteredItems([...items]);

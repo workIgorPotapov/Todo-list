@@ -57,7 +57,8 @@ function ToDoItem({ item, checkItem, removeItem, editItem }) {
 		  <div className={classes.liFunc}>
 				<div className={classes.todoDate}>
 					<Typography className={classes.typography}>
-						{item.time.getDate()}/{item.time.getMonth() + 1}/{item.time.getFullYear()}
+						{/* {item.time.getDate()}/{item.time.getMonth() + 1}/{item.time.getFullYear()} */}
+						{item.time}
 					</Typography>
 				</div>
 				<Button variant="outlined" className={classes.delete} onClick={() => removeItem(item.id)}>
