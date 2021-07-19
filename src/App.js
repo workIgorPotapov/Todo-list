@@ -29,9 +29,8 @@ function App() {
 		axios.get('https://todo-api-learning.herokuapp.com/v1/tasks/2').then((res) => {
 			const arr = res.data.map(item => addItem(item.name, item.uuid, item.done, item.updatedAt));
 			console.log(res.data);
-			let qwe = new Date().toString();
-			console.log(qwe);
-	});
+
+		});
 	}
 
 		const addItem = (task, id, status, time) => {
@@ -85,12 +84,28 @@ function App() {
 		}
 
 		const sortUp = () => {
-			const sortUpArray = items.sort((a, b) => b.time - a.time);
+			const sortUpArray = items.sort((a, b) => {
+				if (a.time < b.time) {
+					return -1;
+				}
+				if (a.time > b.time){
+					return 1;
+				}
+				return 0;
+				});
 			setFilteredItems([...sortUpArray]);
 		}
 
 		const sortDown = () => {
-			const sortDownArray = items.sort((a, b) => a.time - b.time);
+			const sortDownArray = items.sort((a, b) => {
+				if (a.time > b.time) {
+					return -1;
+				}
+				if (a.time < b.time){
+					return 1;
+				}
+				return 0;
+				});
 			setFilteredItems([...sortDownArray]);
 		}
 
