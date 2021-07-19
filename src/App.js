@@ -33,24 +33,30 @@ function App() {
 	const getData = async () => {
 		const res = await axios.get(getLink);
 		console.log(res.data);
-					setItems([...res.data]);
+			setItems([...res.data]);
 		}
 
-	const postData = (task) => {
+	const postData = async (task) => {
 		if (task) {
-			axios.post(postLink, {name: task, done: false})
-			.then(() => getData());
+			await axios.post(postLink, {name: task, done: false});
+			getData();
 		}
 	}
 
-	const deleteData = (id) => {
-		axios.delete(patchLink(id))
-		.then(() => getData());
+	const deleteData = async (id) => {
+		await axios.delete(patchLink(id))
+		getData();
 	}
 
-	const checkData = (item, id) => {
-		axios.patch(patchLink(id), {done: !item.done})
-		.then(() => getData());
+	const checkData = async (item, id) => {
+		await axios.patch(patchLink(id), {done: !item.done})
+		getData();
+		console.log(id)
+	}
+
+	const editData = async (item, todoText, uuid) => {
+		await axios.patch(patchLink(uuid), {name: todoText})
+		getData();
 	}
 
 		const addItem = (task, id, status, time) => {
@@ -171,6 +177,7 @@ function App() {
 						 removeItem={removeItem}
 						 deleteData={deleteData}
 						 checkData={checkData}
+						 editData={editData}
 					 />
 					))
 				}

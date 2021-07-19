@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { ListItem, Checkbox, Button, TextField, Typography } from '@material-ui/core/';
 import useStyles from './To-do-item.style.js';
 
-function ToDoItem({ item, checkItem, editItem, deleteData, checkData }) {    
+function ToDoItem({ item, checkItem, editItem, deleteData, checkData, editData }) { 
 	const [todoText, setTodoText] = useState(item.name);
 	const [isEditing, setIsEditing] = useState(false);
 	const classes = useStyles();
 
-	const editting = (e, id) => {
+	const editting = (e, item, todoText, uuid) => {
 		setTodoText(e.target.value);
 		if (e.key === 'Enter') {        
-			editItem(todoText, uuid);
+			editData(item, todoText, item.uuid);
 			hideInput();
 		}
 		if (e.key === 'Escape') {
@@ -44,8 +44,8 @@ function ToDoItem({ item, checkItem, editItem, deleteData, checkData }) {
 								autoFocus
 								onBlur={() => calcelEditting()}
 								value={todoText}
-								onChange={(e) => editting(e, item.uuid)}
-								onKeyDown={(e) => editting(e, item.uuid)}
+								onKeyDown={(e) => editting(e, item, todoText, item.uuid)}
+								onChange={(e) => editting(e, item, todoText, item.uuid)}
 								className={classes.editInp}
 								type="text"
 								id={'edit_' + item.uuid}
