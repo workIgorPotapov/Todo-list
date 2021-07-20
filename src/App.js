@@ -13,6 +13,8 @@ function App() {
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [resArr, setResArr] = useState([]);
+	const [error, setError] = useState('');
+	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
 	const [itemsPerPage] = useState(5);
 	const classes = useStyles();
@@ -44,6 +46,7 @@ function App() {
 		}
 		catch(error) {
 			const errorCode = error.message.substr(error.message.length - 3);
+			showError(errorCode);
 		}
 	}
 
@@ -54,7 +57,7 @@ function App() {
 		}
 		catch(error) {
 			const errorCode = error.message.substr(error.message.length - 3);
-			console.log(errorCode)
+			showError(errorCode);
 		}
 
 		if (resArr.length > 1 && currentPage.length === 1) {
@@ -75,6 +78,23 @@ function App() {
 		catch(error) {
 			const errorCode = error.message.substr(error.message.length - 3);
 			console.log(errorCode)
+		}
+	}
+
+	const showError = (message) => {
+		if (message === '422') {
+			setIsShown(true);
+			setError('Wrong data');
+			setTimeout(() => {
+				setIsShown(false)
+			}, 4000);
+		}
+		if (message === '404') {
+			setIsShown(true);
+			setError('Not found');
+			setTimeout(() => {
+				setIsShown(false)
+			}, 4000);
 		}
 	}
 
@@ -204,6 +224,9 @@ function App() {
 							totalItems={items.length}
 							lastItemIndex={lastItemIndex}
 							/>
+			}
+			{ isShown && 
+				<div>{error}</div>
 			}
 		</main>
 	);
