@@ -2,7 +2,7 @@ import { ListItem, List, Link } from '@material-ui/core';
 import useStyles from './Pages.style.js';
 
 
-function Pages ({ itemsPerPage, totalItems, page, setPage }) {
+function Pages ({ itemsPerPage, totalItems, page, setPage, lastItemIndex }) {
 	const classes = useStyles();
 	const pageNumber = [];
 

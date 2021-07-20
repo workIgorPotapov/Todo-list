@@ -12,6 +12,7 @@ import useStyles from './App.style.js'
 function App() {
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
+	const [resArr, setResArr] = useState([]);
 	const [page, setPage] = useState(1);
 	const [itemsPerPage] = useState(5);
 	const classes = useStyles();
@@ -32,8 +33,9 @@ function App() {
 
 	const getData = async () => {
 		const res = await axios.get(getLink);
-		console.log(res.data);
 			setItems([...res.data]);
+			setResArr([...res.data]);
+			console.log(items)
 		}
 
 	const postData = async (task) => {
@@ -46,12 +48,15 @@ function App() {
 	const deleteData = async (id) => {
 		await axios.delete(patchLink(id))
 		getData();
+
+		if (resArr.length > 1 && currentPage.length === 1) {
+			setPage(page - 1)
+		}
 	}
 
 	const checkData = async (item, id) => {
 		await axios.patch(patchLink(id), {done: !item.done})
 		getData();
-		console.log(id)
 	}
 
 	const editData = async (item, todoText, uuid) => {
@@ -77,37 +82,37 @@ function App() {
 
 		const editItem = (newValue, id) => {
 			if (newValue) {
-				let newArray = items.map((item) => item.id === id ? {...item, task: newValue} : {...item});
+				let newArray = resArr.map((item) => item.id === id ? {...item, task: newValue} : {...item});
 				setItems([...newArray]);
 				setFilteredItems([...newArray]);
 			}
 		}
 		
 		const removeItem = (id) => {
-			const removedArray = items.filter((item) => item.id !== id);
+			const removedArray = resArr.filter((item) => item.id !== id);
 			setItems([...removedArray]);
 			setFilteredItems([...removedArray]);
 		}
 
 		const checkItem = (id) => {
-			const checkArray = items.map((item) => item.id === id ? {...item, done: !item.done} : {...item});
+			const checkArray = resArr.map((item) => item.id === id ? {...item, done: !item.done} : {...item});
 			setItems([...checkArray]);
 			setFilteredItems([...checkArray]);
 		}
 
 		const showAll = () => {
-			setFilteredItems([...items]);
+			setItems([...resArr]);
 		}
 		
 		const showDone = () => {
-			const doneArray = items.filter((item) => { return item.done !== false});
-			setFilteredItems([...doneArray]);
+			const doneArray = resArr.filter((item) => { return item.done !== false});
+			setItems([...doneArray]);
 				setPage(1);
 		}
 		
 		const showUndone = () => {
-			const undoneArray = items.filter((item) => { return item.done === false});
-			setFilteredItems([...undoneArray]);
+			const undoneArray = resArr.filter((item) => { return item.done === false});
+			setItems([...undoneArray]);
 				setPage(1);
 		}
 
@@ -122,7 +127,7 @@ function App() {
 				return 0;
 				});
 				
-			setFilteredItems([...sortUpArray]);
+			setItems([...sortUpArray]);
 			console.log(filteredItems);
 			console.log(items);
 		}
@@ -138,7 +143,7 @@ function App() {
 				return 0;
 				});
 
-			setFilteredItems([...sortDownArray]);
+			setItems([...sortDownArray]);
 			console.log(filteredItems);
 			console.log(items);
 		}
@@ -153,7 +158,6 @@ function App() {
 				/>
 				<div className={classes.formButtons}>
 					<FilterItems
-						filteredItems={[...filteredItems]}
 						showAll={showAll}
 						showDone={showDone}
 						showUndone={showUndone}
@@ -188,6 +192,7 @@ function App() {
 							page={page}
 							itemsPerPage={itemsPerPage}
 							totalItems={items.length}
+							lastItemIndex={lastItemIndex}
 							/>
 			}
 		</main>
