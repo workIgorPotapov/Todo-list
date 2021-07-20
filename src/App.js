@@ -5,8 +5,9 @@ import FilterItems from "./Filter-items";
 import SortItems from "./Sort-items";
 import ToDoItem from './To-do-item';
 import Pages from './Pages';
-import { Typography, List } from '@material-ui/core';
-import useStyles from './App.style.js'
+import { Typography, List, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import useStyles from './App.style.js';
 
 
 function App() {
@@ -77,25 +78,23 @@ function App() {
 		}
 		catch(error) {
 			const errorCode = error.message.substr(error.message.length - 3);
-			console.log(errorCode)
+			showError(errorCode);
 		}
 	}
 
 	const showError = (message) => {
 		if (message === '422') {
 			setIsShown(true);
-			setError('Wrong data');
-			setTimeout(() => {
-				setIsShown(false)
-			}, 4000);
+			setError('Item`s text must contain more than one symbol');
 		}
 		if (message === '404') {
 			setIsShown(true);
-			setError('Not found');
-			setTimeout(() => {
-				setIsShown(false)
-			}, 4000);
+			setError('Item is not found');
 		}
+		if (message === '400') {
+			setIsShown(true);
+			setError('Item has been already added');
+		}		
 	}
 
 		const addItem = (task, id, status, time) => {
@@ -178,6 +177,17 @@ function App() {
 			setItems([...sortDownArray]);
 		}
 
+		const handleClose = (event, reason) => {
+			if(reason === 'clickaway') {
+				return
+			}
+			
+			if(reason === 'timeout' || event.type === 'click') {
+				setIsShown(false)
+			}
+			console.log(event, reason)
+		}
+
 	return (
 		<main className={classes.main}>
 			<header className={classes.header}>
@@ -225,9 +235,12 @@ function App() {
 							lastItemIndex={lastItemIndex}
 							/>
 			}
-			{ isShown && 
-				<div>{error}</div>
-			}
+				<Snackbar open={isShown} autoHideDuration={4000} onClose={handleClose}>
+					<Alert onClose={(e) => handleClose(e)} severity="error">
+						{error}
+					</Alert>
+				</Snackbar>
+
 		</main>
 	);
 }
