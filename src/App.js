@@ -14,11 +14,10 @@ function App() {
 	const [items, setItems] = useState([]);
 	const [filter, setFilter] = useState('');
 	const [sort, setSort] = useState('order=asc');
-	const [resArr, setResArr] = useState([]);
 	const [error, setError] = useState('');
 	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
-	const [itemsPerPage] = useState(5);
+	const itemsPerPage = 5;
 	const classes = useStyles();
 
 	const lastItemIndex = page * itemsPerPage;
@@ -33,15 +32,16 @@ function App() {
 	}, [filter, sort]);
 
 	const getData = async () => {
-		let amp = '';
-		if (filter.length > 1) {
-			amp = '&'
-		}
+		// let amp = '';
+		// if (filter.length > 1) {
+		// 	amp = '&'
+		// }
+		// const res = await axios.get(`${getLink}` + '?' + filter + amp + sort);
 
-		const res = await axios.get(`${getLink}` + '?' + filter + amp + sort);
-		console.log(`${getLink}` + '?' + filter + amp + sort);
+		// const res = await axios.get(`${getLink}` + '?' + filter + (filter.length > 0 ? `&${sort}` : sort));
+
+		const res = await axios.get(`${getLink}?${filter}&${sort}`);
 			setItems(res.data);
-			setResArr(res.data);
 		}
 
 	const postData = async (task) => {
@@ -65,7 +65,7 @@ function App() {
 			showError(errorMessage);
 		}
 
-		if (resArr.length > 1 && currentPage.length === 1) {
+		if (items.length > 1 && currentPage.length === 1) {
 			setPage(page - 1)
 		}
 	}
@@ -114,7 +114,7 @@ function App() {
 
 		const handleClose = (event, reason) => {
 			if(reason === 'clickaway') {
-				return
+				return;
 			}
 			
 			if(reason === 'timeout' || event.type === 'click') {
