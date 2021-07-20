@@ -50,8 +50,8 @@ function App() {
 			getData();
 		}
 		catch(error) {
-			const errorCode = error.message.substr(error.message.length - 3);
-			showError(errorCode);
+			const errorMessage = error.response.data.message;
+			showError(errorMessage);
 		}
 	}
 
@@ -61,8 +61,8 @@ function App() {
 			getData();
 		}
 		catch(error) {
-			const errorCode = error.message.substr(error.message.length - 3);
-			showError(errorCode);
+			const errorMessage = error.response.data.message;
+			showError(errorMessage);
 		}
 
 		if (resArr.length > 1 && currentPage.length === 1) {
@@ -81,24 +81,14 @@ function App() {
 			getData();
 		}
 		catch(error) {
-			const errorCode = error.message.substr(error.message.length - 3);
-			showError(errorCode);
+			const errorMessage = error.response.data.message;
+			showError(errorMessage);
 		}
 	}
 
 	const showError = (message) => {
-		if (message === '422') {
 			setIsShown(true);
-			setError('Item`s text must contain more than one symbol');
-		}
-		if (message === '404') {
-			setIsShown(true);
-			setError('Item is not found');
-		}
-		if (message === '400') {
-			setIsShown(true);
-			setError('Item has been already added');
-		}		
+			setError(message);	
 	}
 
 		const addItem = (task, id, status, time) => {
@@ -136,24 +126,6 @@ function App() {
 			setItems([...checkArray]);
 			setFilteredItems([...checkArray]);
 		}
-
-		// const showAll = () => {
-		// 	setFilter('', () => {
-		// 		getData();
-		//  });
-		// }
-
-		// const showDone = () => {
-		// 	setFilter('filterBy=done', () => {
-		// 		getData();
-		//  });
-		// }
-
-		// const showUndone = () => {
-		// 	setFilter('filterBy=undone', () => {
-		// 		getData();
-		//  });
-		// }
 
 		const showAll = () => {
 			setFilter('');
