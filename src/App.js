@@ -12,7 +12,6 @@ import useStyles from './App.style.js';
 
 function App() {
 	const [items, setItems] = useState([]);
-	// const [filteredItems, setFilteredItems] = useState([]);
 	const [filter, setFilter] = useState('');
 	const [sort, setSort] = useState('order=asc');
 	const [resArr, setResArr] = useState([]);
@@ -34,12 +33,13 @@ function App() {
 	}, [filter, sort]);
 
 	const getData = async () => {
-		let q = '';
+		let amp = '';
 		if (filter.length > 1) {
-			q = '&'
+			amp = '&'
 		}
-		const res = await axios.get(`${getLink}` + '?' + filter + q + sort);
-		console.log(`${getLink}` + '?' + filter + q + sort);
+
+		const res = await axios.get(`${getLink}` + '?' + filter + amp + sort);
+		console.log(`${getLink}` + '?' + filter + amp + sort);
 			setItems(res.data);
 			setResArr(res.data);
 		}
@@ -75,7 +75,7 @@ function App() {
 		getData();
 	}
 
-	const editData = async (item, todoText, id) => {
+	const editData = async (todoText, id) => {
 		try {
 			await axios.patch(`${baseUrl}/${id}`, {name: todoText})
 			getData();
@@ -91,42 +91,6 @@ function App() {
 			setError(message);	
 	}
 
-		const addItem = (task, id, status, time) => {
-			if (task) {
-				const newItem = {
-					// id: Math.random().toString().substr(2,5),
-					id: id,
-					task: task,
-					done: status,
-					time: time,
-				}
-				const newArr = [...items];
-				newArr.push(newItem);
-				setItems([...newArr]);
-				setFilteredItems([...items]);
-			}
-		}
-
-		const editItem = (newValue, id) => {
-			if (newValue) {
-				let newArray = resArr.map((item) => item.id === id ? {...item, task: newValue} : {...item});
-				setItems([...newArray]);
-				setFilteredItems([...newArray]);
-			}
-		}
-		
-		const removeItem = (id) => {
-			const removedArray = resArr.filter((item) => item.id !== id);
-			setItems([...removedArray]);
-			setFilteredItems([...removedArray]);
-		}
-
-		const checkItem = (id) => {
-			const checkArray = resArr.map((item) => item.id === id ? {...item, done: !item.done} : {...item});
-			setItems([...checkArray]);
-			setFilteredItems([...checkArray]);
-		}
-
 		const showAll = () => {
 			setFilter('');
 		}
@@ -140,24 +104,6 @@ function App() {
 			setFilter('filterBy=undone');
 		}
 
-		
-		// const showDone = () => {
-		// 	const doneArray = resArr.filter((item) => { return item.done !== false});
-		// 	setItems([...doneArray]);
-		// 		setPage(1);
-		// }
-		
-		// const showUndone = () => {
-		// 	const undoneArray = resArr.filter((item) => { return item.done === false});
-		// 	setItems([...undoneArray]);
-		// 		setPage(1);
-		// }
-
-		// const sortUp = () => {
-		// 	const desc = 'order=desc';
-
-		// }
-
 		const sortUp = () => {
 			setSort('order=desc');
 		}
@@ -165,34 +111,6 @@ function App() {
 		const sortDown = () => {
 			setSort('order=asc');
 		}
-
-		// const sortUp = () => {
-		// 	const sortUpArray = items.sort((a, b) => {
-		// 		if (a.createdAt > b.createdAt) {
-		// 			return -1;
-		// 		}
-		// 		if (a.createdAt < b.createdAt){
-		// 			return 1;
-		// 		}
-		// 		return 0;
-		// 		});
-				
-		// 	setItems([...sortUpArray]);
-		// }
-
-		// const sortDown = () => {
-		// 	const sortDownArray = items.sort((a, b) => {
-		// 		if (a.createdAt < b.createdAt) {
-		// 			return -1;
-		// 		}
-		// 		if (a.createdAt > b.createdAt){
-		// 			return 1;
-		// 		}
-		// 		return 0;
-		// 		});
-
-		// 	setItems([...sortDownArray]);
-		// }
 
 		const handleClose = (event, reason) => {
 			if(reason === 'clickaway') {
@@ -210,7 +128,6 @@ function App() {
 			<header className={classes.header}>
 				<Typography className={classes.heading} variant="h1">ToDo</Typography>
 				<ToDoForm 
-				addItem={addItem}
 				postData={postData}
 				/>
 				<div className={classes.formButtons}>
@@ -231,11 +148,8 @@ function App() {
 				{
 					currentPage.map((item) => 
 					(<ToDoItem 
-						 editItem={editItem}
 						 item={item}
 						 key={item.uuid}
-						 checkItem={checkItem}
-						 removeItem={removeItem}
 						 deleteData={deleteData}
 						 checkData={checkData}
 						 editData={editData}

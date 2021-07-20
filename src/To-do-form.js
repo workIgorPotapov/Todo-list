@@ -4,7 +4,7 @@ import useStyles from './To-do-form.style.js'
 
 
 
-function ToDoForm({ addItem, postData }) {
+function ToDoForm({ postData }) {
 	const [inputValue, setInputValue] = useState("");
 	const classes = useStyles();
 
@@ -15,7 +15,6 @@ function ToDoForm({ addItem, postData }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		postData(inputValue)
-		// addItem(inputValue);
 		setInputValue('');
 	}
 
