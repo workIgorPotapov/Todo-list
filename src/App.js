@@ -35,19 +35,27 @@ function App() {
 		const res = await axios.get(getLink);
 			setItems([...res.data]);
 			setResArr([...res.data]);
-			console.log(res.data);
 		}
 
 	const postData = async (task) => {
-		if (task) {
+		if (task) try {
 			await axios.post(postLink, {name: task, done: false});
 			getData();
+		}
+		catch(error) {
+			const errorCode = error.message.substr(error.message.length - 3);
 		}
 	}
 
 	const deleteData = async (id) => {
-		await axios.delete(patchLink(id))
-		getData();
+		try {
+			await axios.delete(patchLink(id))
+			getData();
+		}
+		catch(error) {
+			const errorCode = error.message.substr(error.message.length - 3);
+			console.log(errorCode)
+		}
 
 		if (resArr.length > 1 && currentPage.length === 1) {
 			setPage(page - 1)
@@ -60,8 +68,14 @@ function App() {
 	}
 
 	const editData = async (item, todoText, uuid) => {
-		await axios.patch(patchLink(uuid), {name: todoText})
-		getData();
+		try {
+			await axios.patch(patchLink(uuid), {name: todoText})
+			getData();
+		}
+		catch(error) {
+			const errorCode = error.message.substr(error.message.length - 3);
+			console.log(errorCode)
+		}
 	}
 
 		const addItem = (task, id, status, time) => {
