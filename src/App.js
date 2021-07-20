@@ -21,7 +21,7 @@ function App() {
 	const firstItemIndex = lastItemIndex - itemsPerPage;
 	const currentPage = items.slice(firstItemIndex, lastItemIndex);
 
-	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2';
+	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2?order=asc';
 	const postLink = 'https://todo-api-learning.herokuapp.com/v1/task/2';
 	const patchLink = (id) => {
 		return `https://todo-api-learning.herokuapp.com/v1/task/2/${id}`
@@ -35,7 +35,7 @@ function App() {
 		const res = await axios.get(getLink);
 			setItems([...res.data]);
 			setResArr([...res.data]);
-			console.log(items)
+			console.log(res.data);
 		}
 
 	const postData = async (task) => {
@@ -118,34 +118,30 @@ function App() {
 
 		const sortUp = () => {
 			const sortUpArray = items.sort((a, b) => {
-				if (a.time > b.time) {
+				if (a.createdAt > b.createdAt) {
 					return -1;
 				}
-				if (a.time < b.time){
+				if (a.createdAt < b.createdAt){
 					return 1;
 				}
 				return 0;
 				});
 				
 			setItems([...sortUpArray]);
-			console.log(filteredItems);
-			console.log(items);
 		}
 
 		const sortDown = () => {
 			const sortDownArray = items.sort((a, b) => {
-				if (a.time < b.time) {
+				if (a.createdAt < b.createdAt) {
 					return -1;
 				}
-				if (a.time > b.time){
+				if (a.createdAt > b.createdAt){
 					return 1;
 				}
 				return 0;
 				});
 
 			setItems([...sortDownArray]);
-			console.log(filteredItems);
-			console.log(items);
 		}
 
 	return (

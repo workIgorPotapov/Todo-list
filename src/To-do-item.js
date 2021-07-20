@@ -36,7 +36,7 @@ function ToDoItem({ item, checkItem, editItem, deleteData, checkData, editData }
 							onClick={() => checkData(item, item.uuid)}
 							type="checkbox" 
 							id={'inp_' + item.uuid}
-							defaultChecked={item.done}
+							defaultChecked={item.done ? item.done : item.done}
 							color="primary"
 						/>
 						{isEditing ?
@@ -57,7 +57,7 @@ function ToDoItem({ item, checkItem, editItem, deleteData, checkData, editData }
 		  <div className={classes.liFunc}>
 				<div className={classes.todoDate}>
 					<Typography className={classes.typography}>
-						{/* {item.time.substr(0, 10)} */}
+						{item.createdAt.substr(0, 10)}
 					</Typography>
 				</div>
 				<Button variant="outlined" className={classes.delete} onClick={() => deleteData(item.uuid)}>
