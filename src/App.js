@@ -32,7 +32,7 @@ function App() {
 
 	useEffect(() => {
 		getData()
-	}, [])
+	}, []);
 
 	const getData = async () => {
 		const res = await axios.get(getLink);

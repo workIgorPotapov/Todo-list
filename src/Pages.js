@@ -34,13 +34,13 @@ function Pages ({ itemsPerPage, totalItems, page, setPage, lastItemIndex }) {
 					{
 						(page > 1) &&
 						<ListItem className={classes.page} onClick={() => setPage(page - 1)}>
-							<Link href="!#" className={classes.pageLink}>{'<<'}</Link>
+							<Link className={classes.pageLink}>{'<<'}</Link>
 						</ListItem>
 					}
 					{
 						pageNumber.slice(showStart, showEnd).map(number => (
 							<ListItem className={`${number === page ? classes.pageActive : classes.page}`} key={number} onClick={() => setPage(number)}>
-								<Link href="!#" className={`${number === page ? classes.pageLinkActive : classes.pageLink}`}
+								<Link className={`${number === page ? classes.pageLinkActive : classes.pageLink}`}
 								>
 									{number}
 								</Link>
@@ -50,7 +50,7 @@ function Pages ({ itemsPerPage, totalItems, page, setPage, lastItemIndex }) {
 					{
 						(page < pageNumber.length) &&
 						<ListItem className={classes.page} onClick={() => setPage(page + 1)}>
-							<Link href="!#" className={classes.pageLink}>{'>>'}</Link>
+							<Link className={classes.pageLink}>{'>>'}</Link>
 						</ListItem>
 					}
 				</List>
