@@ -12,7 +12,9 @@ import useStyles from './App.style.js';
 
 function App() {
 	const [items, setItems] = useState([]);
-	const [filteredItems, setFilteredItems] = useState([]);
+	// const [filteredItems, setFilteredItems] = useState([]);
+	const [filter, setFilter] = useState('');
+	const [sort, setSort] = useState('order=asc');
 	const [resArr, setResArr] = useState([]);
 	const [error, setError] = useState('');
 	const [isShown, setIsShown] = useState(false);
@@ -24,25 +26,27 @@ function App() {
 	const firstItemIndex = lastItemIndex - itemsPerPage;
 	const currentPage = items.slice(firstItemIndex, lastItemIndex);
 
-	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2?order=asc';
-	const postLink = 'https://todo-api-learning.herokuapp.com/v1/task/2';
-	const patchLink = (id) => {
-		return `https://todo-api-learning.herokuapp.com/v1/task/2/${id}`
-	}
+	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2';
+	const baseUrl = 'https://todo-api-learning.herokuapp.com/v1/task/2';
 
 	useEffect(() => {
-		getData()
-	}, []);
+		getData();
+	}, [filter, sort]);
 
 	const getData = async () => {
-		const res = await axios.get(getLink);
-			setItems([...res.data]);
-			setResArr([...res.data]);
+		let q = '';
+		if (filter.length > 1) {
+			q = '&'
+		}
+		const res = await axios.get(`${getLink}` + '?' + filter + q + sort);
+		console.log(`${getLink}` + '?' + filter + q + sort);
+			setItems(res.data);
+			setResArr(res.data);
 		}
 
 	const postData = async (task) => {
 		if (task) try {
-			await axios.post(postLink, {name: task, done: false});
+			await axios.post(baseUrl, {name: task, done: false});
 			getData();
 		}
 		catch(error) {
@@ -53,7 +57,7 @@ function App() {
 
 	const deleteData = async (id) => {
 		try {
-			await axios.delete(patchLink(id))
+			await axios.delete(`${baseUrl}/${id}`)
 			getData();
 		}
 		catch(error) {
@@ -67,13 +71,13 @@ function App() {
 	}
 
 	const checkData = async (item, id) => {
-		await axios.patch(patchLink(id), {done: !item.done})
+		await axios.patch(`${baseUrl}/${id}`, {done: !item.done})
 		getData();
 	}
 
-	const editData = async (item, todoText, uuid) => {
+	const editData = async (item, todoText, id) => {
 		try {
-			await axios.patch(patchLink(uuid), {name: todoText})
+			await axios.patch(`${baseUrl}/${id}`, {name: todoText})
 			getData();
 		}
 		catch(error) {
@@ -133,49 +137,90 @@ function App() {
 			setFilteredItems([...checkArray]);
 		}
 
+		// const showAll = () => {
+		// 	setFilter('', () => {
+		// 		getData();
+		//  });
+		// }
+
+		// const showDone = () => {
+		// 	setFilter('filterBy=done', () => {
+		// 		getData();
+		//  });
+		// }
+
+		// const showUndone = () => {
+		// 	setFilter('filterBy=undone', () => {
+		// 		getData();
+		//  });
+		// }
+
 		const showAll = () => {
-			setItems([...resArr]);
-		}
-		
-		const showDone = () => {
-			const doneArray = resArr.filter((item) => { return item.done !== false});
-			setItems([...doneArray]);
-				setPage(1);
-		}
-		
-		const showUndone = () => {
-			const undoneArray = resArr.filter((item) => { return item.done === false});
-			setItems([...undoneArray]);
-				setPage(1);
+			setFilter('');
 		}
 
+		const showDone = () => {
+			setFilter('filterBy=done');
+
+		}
+
+		const showUndone = () => {
+			setFilter('filterBy=undone');
+		}
+
+		
+		// const showDone = () => {
+		// 	const doneArray = resArr.filter((item) => { return item.done !== false});
+		// 	setItems([...doneArray]);
+		// 		setPage(1);
+		// }
+		
+		// const showUndone = () => {
+		// 	const undoneArray = resArr.filter((item) => { return item.done === false});
+		// 	setItems([...undoneArray]);
+		// 		setPage(1);
+		// }
+
+		// const sortUp = () => {
+		// 	const desc = 'order=desc';
+
+		// }
+
 		const sortUp = () => {
-			const sortUpArray = items.sort((a, b) => {
-				if (a.createdAt > b.createdAt) {
-					return -1;
-				}
-				if (a.createdAt < b.createdAt){
-					return 1;
-				}
-				return 0;
-				});
-				
-			setItems([...sortUpArray]);
+			setSort('order=desc');
 		}
 
 		const sortDown = () => {
-			const sortDownArray = items.sort((a, b) => {
-				if (a.createdAt < b.createdAt) {
-					return -1;
-				}
-				if (a.createdAt > b.createdAt){
-					return 1;
-				}
-				return 0;
-				});
-
-			setItems([...sortDownArray]);
+			setSort('order=asc');
 		}
+
+		// const sortUp = () => {
+		// 	const sortUpArray = items.sort((a, b) => {
+		// 		if (a.createdAt > b.createdAt) {
+		// 			return -1;
+		// 		}
+		// 		if (a.createdAt < b.createdAt){
+		// 			return 1;
+		// 		}
+		// 		return 0;
+		// 		});
+				
+		// 	setItems([...sortUpArray]);
+		// }
+
+		// const sortDown = () => {
+		// 	const sortDownArray = items.sort((a, b) => {
+		// 		if (a.createdAt < b.createdAt) {
+		// 			return -1;
+		// 		}
+		// 		if (a.createdAt > b.createdAt){
+		// 			return 1;
+		// 		}
+		// 		return 0;
+		// 		});
+
+		// 	setItems([...sortDownArray]);
+		// }
 
 		const handleClose = (event, reason) => {
 			if(reason === 'clickaway') {
