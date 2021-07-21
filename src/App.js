@@ -13,11 +13,11 @@ import useStyles from './App.style.js';
 function App() {
 	const [items, setItems] = useState([]);
 	const [filter, setFilter] = useState('');
-	const [sort, setSort] = useState('order=asc');
+	const [sort, setSort] = useState('asc');
 	const [error, setError] = useState('');
 	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
-	const [requestTime, setRequestTime] = useState(Date.now());
+	// const [requestTime, setRequestTime] = useState(Date.now());
 	const itemsPerPage = 5;
 	const classes = useStyles();
 
@@ -33,16 +33,12 @@ function App() {
 	}, [filter, sort]);
 
 	const getData = async () => {
-		// let amp = '';
-		// if (filter.length > 1) {
-		// 	amp = '&'
-		// }
-		// const res = await axios.get(`${getLink}` + '?' + filter + amp + sort);
-
-		// const res = await axios.get(`${getLink}` + '?' + filter + (filter.length > 0 ? `&${sort}` : sort));
-
-
-		const res = await axios.get(`${getLink}?${filter}&${sort}`);
+		const res = await axios.get(`${getLink}`, {
+			params : {
+				filterBy: filter,
+				order: sort,
+			}
+		});
 			setItems(res.data);
 		}
 
@@ -58,14 +54,14 @@ function App() {
 	}
 
 	const deleteData = async (id) => {
-		const now = Date.now();
+		// const now = Date.now();
 		
-		if ((now - requestTime) < 500) {
-			getData();
-			return;
-		}
+		// if ((now - requestTime) < 500) {
+		// 	getData();
+		// 	return;
+		// }
 		
-		setRequestTime(Date.now());
+		// setRequestTime(Date.now());
 
 		try {
 			await axios.delete(`${baseUrl}/${id}`)
@@ -104,23 +100,25 @@ function App() {
 
 		const showAll = () => {
 			setFilter('');
+			setPage(1);
 		}
 
 		const showDone = () => {
-			setFilter('filterBy=done');
-
+			setFilter('done');
+			setPage(1);
 		}
 
 		const showUndone = () => {
-			setFilter('filterBy=undone');
+			setFilter('undone');
+			setPage(1);
 		}
 
 		const sortUp = () => {
-			setSort('order=desc');
+			setSort('desc');
 		}
 
 		const sortDown = () => {
-			setSort('order=asc');
+			setSort('asc');
 		}
 
 		const handleClose = (event, reason) => {

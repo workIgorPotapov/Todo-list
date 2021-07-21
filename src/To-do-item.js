@@ -5,6 +5,7 @@ import useStyles from './To-do-item.style.js';
 function ToDoItem({ item, deleteData, checkData, editData }) { 
 	const [todoText, setTodoText] = useState(item.name);
 	const [isEditing, setIsEditing] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(false);
 	const classes = useStyles();
 
 	const editting = (e, todoText) => {
@@ -25,6 +26,14 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 
 	const hideInput = () => {
 		setIsEditing(false);
+	}
+
+	const deleting = async (id) => {
+		setIsDisabled(true);
+		const response = await deleteData(id);
+		if (response) {
+			setIsDisabled(false);
+		}
 	}
 
 	return (
@@ -60,7 +69,7 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 						{item.createdAt.substr(0, 10)}
 					</Typography>
 				</div>
-				<Button variant="outlined" className={classes.delete} onClick={() => deleteData(item.uuid)}>
+				<Button variant="outlined" disabled={isDisabled}className={classes.delete} onClick={() => deleting(item.uuid)}>
 					<i className="far fa-trash-alt fa-lg"></i>
 				</Button>
 		  </div>
