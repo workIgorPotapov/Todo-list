@@ -29,8 +29,7 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 
 	return (
 		<ListItem className={classes.todoLi}
-			key={item.uuid}
-			onDoubleClick={(e) => setIsEditing(true)}>
+			key={item.uuid}>
 					<div className={classes.liInner}>
 						<Checkbox 
 							onClick={() => checkData(item, item.uuid)}
@@ -51,7 +50,8 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 								id={'edit_' + item.uuid}
 							/>
 						:
-							<Typography className={classes.typography}>{item.name}</Typography>
+							<Typography onDoubleClick={(e) => setIsEditing(true)}
+							className={classes.typography}>{item.name}</Typography>
 						}
 					</div>
 		  <div className={classes.liFunc}>

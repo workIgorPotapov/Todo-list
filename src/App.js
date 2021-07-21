@@ -17,6 +17,7 @@ function App() {
 	const [error, setError] = useState('');
 	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
+	const [requestTime, setRequestTime] = useState(Date.now());
 	const itemsPerPage = 5;
 	const classes = useStyles();
 
@@ -40,6 +41,7 @@ function App() {
 
 		// const res = await axios.get(`${getLink}` + '?' + filter + (filter.length > 0 ? `&${sort}` : sort));
 
+
 		const res = await axios.get(`${getLink}?${filter}&${sort}`);
 			setItems(res.data);
 		}
@@ -56,6 +58,15 @@ function App() {
 	}
 
 	const deleteData = async (id) => {
+		const now = Date.now();
+		
+		if ((now - requestTime) < 500) {
+			getData();
+			return;
+		}
+		
+		setRequestTime(Date.now());
+
 		try {
 			await axios.delete(`${baseUrl}/${id}`)
 			getData();
