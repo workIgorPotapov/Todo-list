@@ -1,7 +1,7 @@
 import { ListItem, List, Button, Typography, Box } from '@material-ui/core';
 import useStyles from './Filter-items.style.js'
 
-function FilterItems({ showAll, showDone, showUndone }) {
+function FilterItems({ filtration }) {
 	const classes = useStyles();
 
 	return (
@@ -9,7 +9,7 @@ function FilterItems({ showAll, showDone, showUndone }) {
 			<ListItem className={classes.filterItems}>
 				<Box ml={'3px'}>
 					<Button 
-						onClick={() => showAll()}
+						onClick={() => filtration('all')}
 						className={classes.filterButton} 
 						type="submit"
 						variant="contained"
@@ -21,7 +21,7 @@ function FilterItems({ showAll, showDone, showUndone }) {
 			<ListItem className={classes.filterItems}>
 				<Box ml={'3px'}>
 					<Button 
-						onClick={() => showDone()}
+						onClick={() => filtration('done')}
 						className={classes.filterButton}  
 						type="submit"
 						variant="contained"
@@ -33,7 +33,7 @@ function FilterItems({ showAll, showDone, showUndone }) {
 			<ListItem className={classes.filterItems}>
 				<Box ml={'3px'}>
 					<Button 
-					onClick={() => showUndone()}
+					onClick={() => filtration('undone')}
 					className={classes.filterButton} 
 					type="submit"
 					variant="contained"

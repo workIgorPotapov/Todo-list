@@ -1,7 +1,7 @@
 import { Button, Typography, Box } from '@material-ui/core';
 import useStyles from './Sort-items.style.js';
 
-function SortItems({sortUp, sortDown}) {
+function SortItems({ sorting }) {
 	const classes = useStyles();
 
 	return (
@@ -11,7 +11,7 @@ function SortItems({sortUp, sortDown}) {
 			</Box>
 			<Box mr={'3px'}>
 				<Button
-					onClick={() => sortUp()}
+					onClick={() => sorting('desc')}
 					className={classes.sortButton}
 					variant="contained"
 					color="default">
@@ -20,7 +20,7 @@ function SortItems({sortUp, sortDown}) {
 			</Box>
 			<Box mr={'3px'}>
 				<Button
-					onClick={() => sortDown()}
+					onClick={() => sorting('asc')}
 					className={classes.sortButton}
 					variant="contained"
 					color="default">

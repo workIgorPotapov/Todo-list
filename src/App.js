@@ -94,43 +94,41 @@ function App() {
 	}
 
 	const showError = (message) => {
-			setIsShown(true);
-			setError(message);	
+		setIsShown(true);
+		setError(message);	
 	}
 
-		const showAll = () => {
+	const filtration = (props) => {
+		if (props === 'all') {
 			setFilter('');
-			setPage(1);
 		}
-
-		const showDone = () => {
-			setFilter('done');
-			setPage(1);
+		if (props === 'done') {
+			setFilter('done')
 		}
-
-		const showUndone = () => {
+		if (props === 'undone') {
 			setFilter('undone');
-			setPage(1);
 		}
-
-		const sortUp = () => {
-			setSort('desc');
-		}
-
-		const sortDown = () => {
+		setPage(1);
+	}
+	
+	const sorting = (props) => {
+		if (props === 'asc') {
 			setSort('asc');
 		}
-
-		const handleClose = (event, reason) => {
-			if(reason === 'clickaway') {
-				return;
-			}
-			
-			if(reason === 'timeout' || event.type === 'click') {
-				setIsShown(false)
-			}
-			console.log(event, reason)
+		if (props === 'desc') {
+			setSort('desc');
 		}
+	}
+
+	const handleClose = (event, reason) => {
+		if(reason === 'clickaway') {
+			return;
+		}
+		
+		if(reason === 'timeout' || event.type === 'click') {
+			setIsShown(false)
+		}
+	}
 
 	return (
 		<main className={classes.main}>
@@ -141,13 +139,10 @@ function App() {
 				/>
 				<div className={classes.formButtons}>
 					<FilterItems
-						showAll={showAll}
-						showDone={showDone}
-						showUndone={showUndone}
+						filtration={filtration}
 					/>
 					<SortItems
-						sortUp={sortUp}
-						sortDown={sortDown}
+						sorting={sorting}
 					/>
 				</div>
 			</header>
