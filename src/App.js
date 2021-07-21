@@ -126,7 +126,7 @@ function App() {
 		}
 		
 		if(reason === 'timeout' || event.type === 'click') {
-			setIsShown(false)
+			setIsShown(false);
 		}
 	}
 

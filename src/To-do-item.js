@@ -44,7 +44,7 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 							onClick={() => checkData(item, item.uuid)}
 							type="checkbox" 
 							id={'inp_' + item.uuid}
-							defaultChecked={item.done ? item.done : item.done}
+							checked={item.done}
 							color="primary"
 						/>
 						{isEditing ?
