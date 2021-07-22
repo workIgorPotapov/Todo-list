@@ -28,12 +28,9 @@ function ToDoItem({ item, deleteData, checkData, editData }) {
 		setIsEditing(false);
 	}
 
-	const deleting = async (id) => {
+	const deleting = (id) => {
 		setIsDisabled(true);
-		const response = await deleteData(id);
-		if (response) {
-			setIsDisabled(false);
-		}
+		deleteData(id);
 	}
 
 	return (
