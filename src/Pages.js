@@ -1,12 +1,12 @@
 import { ListItem, List, Link } from '@material-ui/core';
 import useStyles from './Pages.style.js';
 
-
-function Pages ({ itemsPerPage, totalItems, page, setPage }) {
+// itemsPerPage, totalItems, page, setPage
+function Pages ({ totalItems, page, setPage }) {
 	const classes = useStyles();
 	const pageNumber = [];
 
-	for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+	for (let i = 1; i <= Math.ceil(totalItems / 5); i++) {
 		pageNumber.push(i);
 	}
 

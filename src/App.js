@@ -17,34 +17,34 @@ function App() {
 	const [error, setError] = useState('');
 	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
-	// const [requestTime, setRequestTime] = useState(Date.now());
-	const itemsPerPage = 5;
+	const [totalItems, setTotalItems] = useState(0);
+	// const itemsPerPage = 5;
 	const classes = useStyles();
 
-	const lastItemIndex = page * itemsPerPage;
-	const firstItemIndex = lastItemIndex - itemsPerPage;
-	const currentPage = items.slice(firstItemIndex, lastItemIndex);
+	// const lastItemIndex = page * itemsPerPage;
+	// const firstItemIndex = lastItemIndex - itemsPerPage;
+	// const currentPage = items.slice(firstItemIndex, lastItemIndex);
 
-	const getLink = 'https://todo-api-learning.herokuapp.com/v1/tasks/2';
-	const baseUrl = 'https://todo-api-learning.herokuapp.com/v1/task/2';
+	const getLink = 'https://todo-li-node.herokuapp.com/';
+	const baseUrl = 'https://todo-li-node.herokuapp.com/';
 
-	useEffect(() => {
-		getData();
-	}, [filter, sort]);
 
 	const getData = async () => {
-		const res = await axios.get(`${getLink}`, {
+		const res = await axios.get(`http://localhost:5000/`, {
 			params : {
-				filterBy: filter,
+				page: page,
 				order: sort,
+				filterBy: filter,
 			}
 		});
+		const totalpages = await axios.get(`http://localhost:5000/t`);
+			setTotalItems(totalpages.data);
 			setItems(res.data);
 		}
 
 	const postData = async (task) => {
 		if (task) try {
-			await axios.post(baseUrl, {name: task, done: false});
+			await axios.post(`http://localhost:5000/`, {name: task});
 			getData();
 		}
 		catch(error) {
@@ -64,27 +64,28 @@ function App() {
 		// setRequestTime(Date.now());
 
 		try {
-			await axios.delete(`${baseUrl}/${id}`)
+			await axios.delete(`http://localhost:5000/${id}`);
 			getData();
 		}
 		catch(error) {
-			const errorMessage = error.response.data.message;
-			showError(errorMessage);
+			// const errorMessage = error.response.data.message;
+			// showError(errorMessage);
+			console.log(error)
 		}
 
-		if (items.length > 1 && currentPage.length === 1) {
-			setPage(page - 1)
-		}
+	// 	if (items.length > 1 && currentPage.length === 1) {
+	// 		setPage(page - 1)
+	// 	}
 	}
 
 	const checkData = async (item, id) => {
-		await axios.patch(`${baseUrl}/${id}`, {done: !item.done})
+		await axios.patch(`http://localhost:5000/${id}`, {done: !item.done})
 		getData();
 	}
 
 	const editData = async (todoText, id) => {
 		try {
-			await axios.patch(`${baseUrl}/${id}`, {name: todoText})
+			await axios.patch(`http://localhost:5000/${id}`, {name: todoText})
 			getData();
 		}
 		catch(error) {
@@ -130,6 +131,11 @@ function App() {
 		}
 	}
 
+	useEffect(() => {
+		console.log(totalItems)
+		getData();
+	}, [filter, sort, page]);
+
 	return (
 		<main className={classes.main}>
 			<header className={classes.header}>
@@ -150,7 +156,7 @@ function App() {
 				className={classes.todoUl}
 			>
 				{
-					currentPage.map((item) => 
+					items.map((item) => 
 					(<ToDoItem 
 						 item={item}
 						 key={item.uuid}
@@ -161,13 +167,13 @@ function App() {
 					))
 				}
 			</List>
-			{ items.length > 5 &&
+			{ totalItems > 5 &&
 							<Pages 
 							setPage={setPage}
 							page={page}
-							itemsPerPage={itemsPerPage}
-							totalItems={items.length}
-							lastItemIndex={lastItemIndex}
+							// itemsPerPage={itemsPerPage}
+							totalItems={totalItems}
+							// lastItemIndex={lastItemIndex}
 							/>
 			}
 				<Snackbar open={isShown} autoHideDuration={4000} onClose={handleClose}>
