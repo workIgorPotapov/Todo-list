@@ -37,9 +37,9 @@ function App() {
 				filterBy: filter,
 			}
 		});
-		const totalpages = await axios.get(`http://localhost:5000/t`);
-			setTotalItems(totalpages.data);
-			setItems(res.data);
+		console.log(res)
+			setTotalItems(res.data.showingItems);
+			setItems(res.data.pagArr);
 		}
 
 	const postData = async (task) => {
@@ -50,6 +50,7 @@ function App() {
 		catch(error) {
 			const errorMessage = error.response.data.message;
 			showError(errorMessage);
+			console.log(error)
 		}
 	}
 
@@ -135,7 +136,6 @@ function App() {
 	}
 
 	useEffect(() => {
-		console.log(totalItems)
 		getData();
 	}, [filter, sort, page]);
 
