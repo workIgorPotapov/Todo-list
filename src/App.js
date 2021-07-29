@@ -73,9 +73,12 @@ function App() {
 			console.log(error)
 		}
 
-	// 	if (items.length > 1 && currentPage.length === 1) {
-	// 		setPage(page - 1)
-	// 	}
+		if (totalItems > 1 && items.length === 1) {
+			setPage(page - 1)
+		}
+		// if (items.length > 1 && currentPage.length === 1) {
+		// 	setPage(page - 1)
+		// }
 	}
 
 	const checkData = async (item, id) => {
