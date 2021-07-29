@@ -30,7 +30,7 @@ function App() {
 
 
 	const getData = async () => {
-		const res = await axios.get(`http://localhost:5000/`, {
+		const res = await axios.get(`${baseUrl}`, {
 			params : {
 				page: page,
 				order: sort,
@@ -44,13 +44,13 @@ function App() {
 
 	const postData = async (task) => {
 		if (task) try {
-			await axios.post(`http://localhost:5000/`, {name: task});
+			await axios.post(`${baseUrl}`, {name: task});
 			getData();
 		}
 		catch(error) {
 			const errorMessage = error.response.data.message;
 			showError(errorMessage);
-			console.log(error)
+			console.log(error.response)
 		}
 	}
 
@@ -65,31 +65,28 @@ function App() {
 		// setRequestTime(Date.now());
 
 		try {
-			await axios.delete(`http://localhost:5000/${id}`);
+			await axios.delete(`${baseUrl}${id}`);
 			getData();
 		}
 		catch(error) {
 			// const errorMessage = error.response.data.message;
 			// showError(errorMessage);
-			console.log(error)
+			console.log(error.response)
 		}
 
 		if (totalItems > 1 && items.length === 1) {
 			setPage(page - 1)
 		}
-		// if (items.length > 1 && currentPage.length === 1) {
-		// 	setPage(page - 1)
-		// }
 	}
 
 	const checkData = async (item, id) => {
-		await axios.patch(`http://localhost:5000/${id}`, {done: !item.done})
+		await axios.patch(`${baseUrl}${id}`, {done: !item.done})
 		getData();
 	}
 
 	const editData = async (todoText, id) => {
 		try {
-			await axios.patch(`http://localhost:5000/${id}`, {name: todoText})
+			await axios.patch(`${baseUrl}${id}`, {name: todoText})
 			getData();
 		}
 		catch(error) {
