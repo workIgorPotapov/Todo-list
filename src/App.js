@@ -18,16 +18,9 @@ function App() {
 	const [isShown, setIsShown] = useState(false);
 	const [page, setPage] = useState(1);
 	const [totalItems, setTotalItems] = useState(0);
-	// const itemsPerPage = 5;
 	const classes = useStyles();
 
-	// const lastItemIndex = page * itemsPerPage;
-	// const firstItemIndex = lastItemIndex - itemsPerPage;
-	// const currentPage = items.slice(firstItemIndex, lastItemIndex);
-
-	const getLink = 'https://todo-li-node.herokuapp.com/';
 	const baseUrl = 'https://todo-li-node.herokuapp.com/';
-
 
 	const getData = async () => {
 		const res = await axios.get(`${baseUrl}`, {
@@ -48,29 +41,18 @@ function App() {
 			getData();
 		}
 		catch(error) {
-			const errorMessage = error.response.data.message;
+			const errorMessage = error.response.data[0].msg;
 			showError(errorMessage);
 			console.log(error.response)
 		}
 	}
 
 	const deleteData = async (id) => {
-		// const now = Date.now();
-		
-		// if ((now - requestTime) < 500) {
-		// 	getData();
-		// 	return;
-		// }
-		
-		// setRequestTime(Date.now());
-
 		try {
 			await axios.delete(`${baseUrl}${id}`);
 			getData();
 		}
 		catch(error) {
-			// const errorMessage = error.response.data.message;
-			// showError(errorMessage);
 			console.log(error.response)
 		}
 
@@ -171,9 +153,7 @@ function App() {
 							<Pages 
 							setPage={setPage}
 							page={page}
-							// itemsPerPage={itemsPerPage}
 							totalItems={totalItems}
-							// lastItemIndex={lastItemIndex}
 							/>
 			}
 				<Snackbar open={isShown} autoHideDuration={4000} onClose={handleClose}>
