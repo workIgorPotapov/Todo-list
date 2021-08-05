@@ -20,7 +20,7 @@ function App() {
 	const [totalItems, setTotalItems] = useState(0);
 	const classes = useStyles();
 
-	const baseUrl = 'https://todo-li-node.herokuapp.com/';
+	const baseUrl = 'http://localhost:5000/';
 
 	const getData = async () => {
 		const res = await axios.get(`${baseUrl}`, {
@@ -31,8 +31,8 @@ function App() {
 			}
 		});
 		console.log(res)
-			setTotalItems(res.data.showingItems);
-			setItems(res.data.pagArr);
+			setTotalItems(res.data.count);
+			setItems(res.data.rows);
 		}
 
 	const postData = async (task) => {
