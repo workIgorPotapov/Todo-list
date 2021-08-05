@@ -20,7 +20,7 @@ function App() {
 	const [totalItems, setTotalItems] = useState(0);
 	const classes = useStyles();
 
-	const baseUrl = 'http://localhost:5000/';
+	const baseUrl = 'https://todo-li-app.herokuapp.com/';
 
 	const getData = async () => {
 		const res = await axios.get(`${baseUrl}`, {
@@ -30,7 +30,6 @@ function App() {
 				filterBy: filter,
 			}
 		});
-		console.log(res)
 			setTotalItems(res.data.count);
 			setItems(res.data.rows);
 		}
@@ -43,7 +42,6 @@ function App() {
 		catch(error) {
 			const errorMessage = error.response.data[0].msg;
 			showError(errorMessage);
-			console.log(error.response)
 		}
 	}
 
@@ -53,7 +51,8 @@ function App() {
 			getData();
 		}
 		catch(error) {
-			console.log(error.response)
+			const errorMessage = error.response.data[0].msg;
+			showError(errorMessage);
 		}
 
 		if (totalItems > 1 && items.length === 1) {
