@@ -20,9 +20,13 @@ function App() {
 	const [totalItems, setTotalItems] = useState(0);
 	const classes = useStyles();
 
-	const baseUrl = (process.env.REACT_APP_ENVIRONMENT === 'development') 
-	? 'http://localhost:5000/' 
-	: 'https://todo-li-app.herokuapp.com/';
+	// const { REACT_APP_LOCAL_URL, REACT_APP_SERVER_URL} = process.env;
+
+	// const baseUrl = (process.env.REACT_APP_ENVIRONMENT === 'development') 
+	// ? REACT_APP_LOCAL_URL
+	// : REACT_APP_SERVER_URL;
+
+	const baseUrl = process.env.REACT_APP_URL;
 
 	const getData = async () => {
 		const res = await axios.get(`${baseUrl}`, {
